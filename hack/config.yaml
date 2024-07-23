@@ -9,6 +9,12 @@ gfcli:
     mod:      ""
     cgo:      0
 
+
+  # 以下3个目录的文件由dao命令生成：
+  #     /internal/dao	数据操作对象	通过对象方式访问底层数据源，底层基于ORM组件实现。往往需要结合entity和do通用使用。该目录下的文件开发者可扩展修改，但是往往没这种必要。
+  #     /internal/model/do	数据转换模型  数据转换模型用于业务模型到数据模型的转换，由工具维护，用户不能修改。工具每次生成代码文件将会覆盖该目录。
+  #     /internal/model/entity	数据模型  数据模型由工具维护，用户不能修改。工具每次生成代码文件将会覆盖该目录。
+
   # dao生成
   gen:
     dao:
@@ -16,3 +22,12 @@ gfcli:
         removePrefix:    "gf_"
         descriptionTag:  true
         noModelComment:  true
+        # 指定model中生成的数据实体对象中json标签名称规则，参数不区分大小写。  驼峰
+        jsonCase: "CamelLower"
+        tables: "wf_main_flow"
+        # 代码生成的DAO文件存放目录
+        # daoPath: "dao"
+        # 代码生成DO文件存放目录
+        # doPath: "model/do"
+        # 代码生成的Entity文件存放目录
+        # entityPath: "model/entity"

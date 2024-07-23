@@ -87,6 +87,7 @@ func (s *sUser) Logout(ctx context.Context) error {
 
 // 将密码按照内部算法进行加密
 func (s *sUser) EncryptPassword(passport, password string) string {
+	//MustEncrypt 使用 MD5 算法加密任何类型的变量。
 	return gmd5.MustEncrypt(passport + password)
 }
 
@@ -126,8 +127,13 @@ func (s *sUser) CheckNicknameUnique(ctx context.Context, nickname string) error 
 
 // 用户注册。
 func (s *sUser) Register(ctx context.Context, in model.UserRegisterInput) error {
+	//Transaction方法  使用函数 function f 包装事务逻辑。
+	//	如果它返回非 nil 错误，则回滚事务并从函数 f 返回错误。
+	//	如果函数 f 返回 nil，则提交事务并返回 nil。
+	//	请注意，您不应在函数 f 中提交或回滚事务因为它由此功能自动处理。
 	return dao.User.Transaction(ctx, func(ctx context.Context, tx gdb.TX) error {
 		var user *entity.User
+		//Struct 将参数键值对映射到相应的 struct 对象的属性。
 		if err := gconv.Struct(in, &user); err != nil {
 			return err
 		}
@@ -140,10 +146,12 @@ func (s *sUser) Register(ctx context.Context, in model.UserRegisterInput) error 
 		user.Password = s.EncryptPassword(user.Passport, user.Password)
 		// 自动生成头像
 		avatarFilePath := fmt.Sprintf(`%s/%s.jpg`, s.avatarUploadPath, user.Passport)
+		// govatar是一个头像头像生成库
 		if err := govatar.GenerateFileForUsername(govatar.MALE, user.Passport, avatarFilePath); err != nil {
 			return gerror.Wrapf(err, `自动创建头像失败`)
 		}
 		user.Avatar = fmt.Sprintf(`%s/%s.jpg`, s.avatarUploadUrlPrefix, user.Passport)
+		//存储用户信息
 		_, err := dao.User.Ctx(ctx).Data(user).OmitEmpty().Save()
 		return err
 	})
