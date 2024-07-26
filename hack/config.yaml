@@ -18,8 +18,10 @@ gfcli:
   # dao生成
   gen:
     dao:
-      - link:            "mysql:root:12345678@tcp(127.0.0.1:3306)/focus"
-        removePrefix:    "gf_"
+        link:            "mysql:root:root@tcp(127.0.0.1:3306)/focus"
+        # 生成出来的文件的前缀
+        # prefix: "wf_"
+        # removePrefix:    "wf_"
         descriptionTag:  true
         noModelComment:  true
         # 指定model中生成的数据实体对象中json标签名称规则，参数不区分大小写。  驼峰

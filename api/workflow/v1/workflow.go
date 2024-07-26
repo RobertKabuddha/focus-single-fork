@@ -2,6 +2,10 @@ package v1
 
 import "github.com/gogf/gf/v2/frame/g"
 
+//API接口定义：gf gen ctl 需要满足规范
+//		1.接口定义文件路径需要满足/api/模块/版本/定义文件.go
+//		2.api定义的结构体名称需要满足操作+Req及操作+Res的命名方式。
+
 type WorkFlowListReq struct {
 	g.Meta `path:"/workflow/{UserId}" method:"get" summary:"查看用户自己的工作流" tags:"工作流"`
 	UserId uint `json:"userId" in:"path" dc:"用户ID"`
