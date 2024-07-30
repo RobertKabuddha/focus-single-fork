@@ -16,6 +16,8 @@ func TestSpecialNum(t *testing.T) {
 	gtest.C(t, func(t *gtest.T) {
 		//t.Assert(minimumOperations("200"), 0)
 		t.Assert(minimumOperations("251"), 1)
+		t.Assert(minimumOperations("250"), 0)
+		t.Assert(minimumOperations("21235"), 1)
 	})
 }
 
@@ -23,7 +25,7 @@ func minimumOperations(num string) int {
 	// 删除一个数字 看是否能被25整除 能被整除返回 不能继续删
 	// 返回删除的数字个数
 	orgS := make([]string, 1)
-	orgS = append(orgS, num)
+	orgS[0] = num
 	tier := getTier(orgS, 0)
 	fmt.Println(tier)
 	return tier
